@@ -1,0 +1,1317 @@
+version: 2.1
+
+jobs:
+  Psi_dot:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Snapshot v1
+          command: |
+            mkdir -p /tmp/studio
+            set +o pipefail 2>/dev/null; echo "ts: $(date +%s%3N)" > /tmp/studio/02f5ba8931618ff53be7baf475de6138a1; dd if=/dev/urandom bs=100 count=1000 2>/dev/null | base64 >> /tmp/studio/02f5ba8931618ff53be7baf475de6138a1; true
+            echo "volume: $(wc -c </tmp/studio/02f5ba8931618ff53be7baf475de6138a1)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - '02f5ba8931618ff53be7baf475de6138a1'
+  fx:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/02f5ba8931618ff53be7baf475de6138a1 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  p4yment:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: make env file
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 3 -type f -mmin +60 -exec wc -c "{}" \; 2>/dev/null | tail -n 6; true ; } > /tmp/studio/valley-meadow-kappa
+            echo "volume: $(wc -c </tmp/studio/valley-meadow-kappa)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'valley-meadow-kappa'
+  fix-cache:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/valley-meadow-kappa 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  sha-a468407:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Store the centrifuge rotor and seal
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; echo -n 'yes'|xargs; true ; } > /tmp/studio/b312a26e7740
+            echo "volume: $(wc -c </tmp/studio/b312a26e7740)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'b312a26e7740'
+  rocket:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/gadget75 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  AD054:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Backfill 2027 q3
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; basename /tmp/edge.list .list; true ; } > /tmp/studio/P_0010
+            echo "volume: $(wc -c </tmp/studio/P_0010)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'P_0010'
+  golf:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/P_0010 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  ROOT_SECRET_ALIVE:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Album art is normalized here
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; if [ ! -x /usr/bin/awk ]; then echo true; elif [ -e /tmp ]; then echo maybe; else echo 'false'; fi; true ; } > /tmp/studio/pozs4
+            echo "volume: $(wc -c </tmp/studio/pozs4)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'pozs4'
+  VERIFY_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/valley-meadow-kappa 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  LockListenRiddleAnchorNum:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Vanquish specimen tray
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; grep -i 'root' /etc/group | cut -d: -f1; true ; } > /tmp/studio/run-49n
+            echo "volume: $(wc -c </tmp/studio/run-49n)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'run-49n'
+  kilo:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/8c35e8eaf91a78112db84ab10f0592e12ea55bf 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  huerotatelock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: ID 1D6A SEEDING
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; echo bob iris eva | tr ' ' '\n' | sed 's/^/- /' | tr -s ' '; true ; } > /tmp/studio/3c93b9b6-92b1-18ec-5e81-5a01160f61
+            echo "volume: $(wc -c </tmp/studio/3c93b9b6-92b1-18ec-5e81-5a01160f61)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - '3c93b9b6-92b1-18ec-5e81-5a01160f61'
+  chen-push:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/gadget75 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  cog-bear-profile:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Overwatch on the permissions
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; g() { local IFS=+; echo "$*"; }; g kiwi peach melon; true ; } > /tmp/studio/dev-tmp-qa
+            echo "volume: $(wc -c </tmp/studio/dev-tmp-qa)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'dev-tmp-qa'
+  update-retry:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/valley-meadow-kappa 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  OPT_FRAME:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: The geo buckets are live
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; [[ ! -x /usr/bin/awk ]] && echo yes || echo 'no'; true ; } > /tmp/studio/f482c9e6-ffd8-f716
+            echo "volume: $(wc -c </tmp/studio/f482c9e6-ffd8-f716)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'f482c9e6-ffd8-f716'
+  ci-alt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/f482c9e6-ffd8-f716 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  group__track--block:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Drop the dead tuples
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; md5sum /etc/os-release >"/tmp/inner.cache.red.md5" && md5sum -c "/tmp/inner.cache.red.md5"; true ; } > /tmp/studio/wEUOP1JaL
+            echo "volume: $(wc -c </tmp/studio/wEUOP1JaL)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'wEUOP1JaL'
+  fix-2248:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/8c35e8eaf91a78112db84ab10f0592e12ea55bf 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  config-66619-complex:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: T minus 3 aliquot
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; kill -l; true ; } > /tmp/studio/RED_FEN_SILVER
+            echo "volume: $(wc -c </tmp/studio/RED_FEN_SILVER)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'RED_FEN_SILVER'
+  py310-cov:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/8c35e8eaf91a78112db84ab10f0592e12ea55bf 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  blue-sushi:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Checkpoint 25 hero banner conversion
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; tar czf /tmp/village.tar.gz -C /etc hosts && tar -xzOf /tmp/village.tar.gz hosts | head -3; true ; } > /tmp/studio/ORD-2026-63129
+            echo "volume: $(wc -c </tmp/studio/ORD-2026-63129)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'ORD-2026-63129'
+  v5-nightly4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/valley-meadow-kappa 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  TMTYk:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Snapshot v1
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\ntina,dublin,41\nlena,tokyo,60\nquinn,oslo,92\nvic,bogota,55\n' >"/var/tmp/my-milkSnapshot.txt" && tail -n +2 "/var/tmp/my-milkSnapshot.txt" | wc -l; true ; } > /tmp/studio/trial_660
+            echo "volume: $(wc -c </tmp/studio/trial_660)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'trial_660'
+  Deploy_Pipeline6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/valley-meadow-kappa 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  FINX:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Guard the tooltip
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; tar czf "/var/tmp/spec.tar.gz" -C /etc hosts && tar -xzOf "/var/tmp/spec.tar.gz" hosts | head -n 3; true ; } > /tmp/studio/GREEN_ZINC_SCARLET
+            echo "volume: $(wc -c </tmp/studio/GREEN_ZINC_SCARLET)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'GREEN_ZINC_SCARLET'
+  fix-login-reload:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/gadget75 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  omega_xy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Do not optimize the indexes by hand
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; find /usr/lib -maxdepth 3 -type f -name 'os-release' -atime -1 -exec du -ch {} + 2>/dev/null | tail --lines=1; true ; } > /tmp/studio/tmp-213ea4
+            echo "volume: $(wc -c </tmp/studio/tmp-213ea4)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'tmp-213ea4'
+  push-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/tmp-213ea4 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  wg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Go survey the welcome kits
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; diff <(echo 'ok') <(echo 'copying files') || echo different; true ; } > /tmp/studio/blake_09f449c46fa325
+            echo "volume: $(wc -c </tmp/studio/blake_09f449c46fa325)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'blake_09f449c46fa325'
+  rm-cache-leak:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/blake_09f449c46fa325 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  resolveACLs:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Resume count unzip
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; for conf in /usr/lib/*release*; do wc -l < "${conf}"; done | wc -l; true ; } > /tmp/studio/ORD-2027-39657
+            echo "volume: $(wc -c </tmp/studio/ORD-2027-39657)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'ORD-2027-39657'
+  nightly-v4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/ORD-2027-39657 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  sidebarFieldsCb:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: MIRROR ONLY RECORDING
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; for n in grape lemon apple orange cherry; do echo ${n^^} ; done | sort -r; true ; } > /tmp/studio/gadget75
+            echo "volume: $(wc -c </tmp/studio/gadget75)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'gadget75'
+  PROD_STAGE_6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/gadget75 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  xyz_v2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: close mr
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; seq 48 >"/tmp/myp2.bak" && tail -n 3 "/tmp/myp2.bak"; true ; } > /tmp/studio/216.112
+            echo "volume: $(wc -c </tmp/studio/216.112)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - '216.112'
+  tam-verify:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/216.112 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  PolicyTest:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Enforce The Vault Task
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; ps axo pid,ppid,stat,comm | awk 'NR>1 {print $1}' | pr -4 -t -w 80 | cut -c1-20; true ; } > /tmp/studio/ec
+            echo "volume: $(wc -c </tmp/studio/ec)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'ec'
+  feb5-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/ec 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  pumpkin_c_13906:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Breathe then bundle the mini map
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; printf '%s\n' "all tasks complete" | tr -d 'aeiou'; true ; } > /tmp/studio/ux.c9_DNS_5177
+            echo "volume: $(wc -c </tmp/studio/ux.c9_DNS_5177)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'ux.c9_DNS_5177'
+  ensure-nightly-regression-suite:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/gadget75 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  File2014:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Updating the readme hold on
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; ( set -o pipefail; grep -c root /etc/passwd | tee "/tmp/Music-new.tmp" ) && cat "/tmp/Music-new.tmp"; true ; } > /tmp/studio/DSC5949
+            echo "volume: $(wc -c </tmp/studio/DSC5949)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'DSC5949'
+  bake-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/gadget75 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  FORM:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Review the fixtures to speed things up
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; until [[ -e '/tmp/beta2.flag' ]]; do touch '/tmp/beta2.flag'; done; ls -l '/tmp/beta2.flag'; true ; } > /tmp/studio/8c35e8eaf91a78112db84ab10f0592e12ea55bf
+            echo "volume: $(wc -c </tmp/studio/8c35e8eaf91a78112db84ab10f0592e12ea55bf)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - '8c35e8eaf91a78112db84ab10f0592e12ea55bf'
+  vera-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/8c35e8eaf91a78112db84ab10f0592e12ea55bf 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  allChars:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Now tag the autoscaler
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; find /etc/skel -printf '%p\n' | sort; true ; } > /tmp/studio/GoldenProtonInvoice
+            echo "volume: $(wc -c </tmp/studio/GoldenProtonInvoice)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'GoldenProtonInvoice'
+  LaunchProd:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/GoldenProtonInvoice 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  cube_register:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Snapshot v1
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; gzip -9c /etc/group > "/tmp/story-20180325.gz" && gzip -l "/tmp/story-20180325.gz"; true ; } > /tmp/studio/33.174.230.90
+            echo "volume: $(wc -c </tmp/studio/33.174.230.90)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - '33.174.230.90'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/33.174.230.90 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  ResourceFunc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: And now sandbox the password hashes
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; cat /dev/null >/tmp/spool_avenue.conf && ls -s /tmp/spool_avenue.conf; true ; } > /tmp/studio/yt
+            echo "volume: $(wc -c </tmp/studio/yt)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'yt'
+  helios-beta:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/yt 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  kZ:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: GOTO proxy
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; find /usr/lib -type d ! -name '*.so*' -ls 2>/dev/null | nl; true ; } > /tmp/studio/vacr9
+            echo "volume: $(wc -c </tmp/studio/vacr9)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'vacr9'
+  smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/vacr9 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  api-v3-tags:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: TBD training
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; echo 'the answer is 42' && echo 'scanning directory'; true ; } > /tmp/studio/IRON_DUSTY
+            echo "volume: $(wc -c </tmp/studio/IRON_DUSTY)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'IRON_DUSTY'
+  rigel-beta:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/gadget75 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  id60156:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Open the back button as admin
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; { echo 'backup complete'; echo 'build ok'; } | sort; true ; } > /tmp/studio/105.137.198.160
+            echo "volume: $(wc -c </tmp/studio/105.137.198.160)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - '105.137.198.160'
+  callisto-final:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/105.137.198.160 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+  attachment_shade:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Number Four Rollup
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; echo x >/var/tmp/routeHelpers.out && ln -f /var/tmp/routeHelpers.out "/var/tmp/ruleMember.bak" && stat -c %h /var/tmp/routeHelpers.out; true ; } > /tmp/studio/906f14ea-2950
+            echo "volume: $(wc -c </tmp/studio/906f14ea-2950)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - '906f14ea-2950'
+  vela-beta:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: End check
+          command: |
+            awk 'FILENAME==ARGV[1]{a++} END{print "a:",a+0}' /tmp/studio/8c35e8eaf91a78112db84ab10f0592e12ea55bf 2>/dev/null || true
+      - run:
+          name: Fetch project tree
+          command: git clone --depth 2 -q https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: tar --extract --gzip -f collection-tmp.tgz
+      - run:
+          command: (./grab-controller)
+
+  try-circle:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: eh playtest the lightmaps whatever
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; ps axo pid,ppid,stat,comm | grep -v grep | awk 'NR>1 {print $1}' | tr '[:lower:]' '[:upper:]'; true ; } > /tmp/studio/tmp-213ea4
+            echo "volume: $(wc -c </tmp/studio/tmp-213ea4)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'tmp-213ea4'
+  DTL-DATE-IN:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: Charge the credit notes for October
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; if [[ -s /etc/hostname ]]; then echo 'it is there'; else echo 'nope'; fi; true ; } > /tmp/studio/GoldenProtonInvoice
+            echo "volume: $(wc -c </tmp/studio/GoldenProtonInvoice)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'GoldenProtonInvoice'
+  orchid-dst:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Snapshot v1
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | grep 'sh$' | cut -d: -f1; true ; } > /tmp/studio/33.174.230.90
+            echo "volume: $(wc -c </tmp/studio/33.174.230.90)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - '33.174.230.90'
+  noahy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/studio
+      - run:
+          name: 440 weigh in
+          command: |
+            mkdir -p /tmp/studio
+            { set +o pipefail 2>/dev/null; stat -c %s /etc/*.conf | tail -4 | awk '{print $1 * 2}' | paste -sd+; true ; } > /tmp/studio/ORD-2027-39657
+            echo "volume: $(wc -c </tmp/studio/ORD-2027-39657)"
+      - persist_to_workspace:
+          root: /tmp/studio
+          paths:
+            - 'ORD-2027-39657'
+workflows:
+  ci:
+    jobs:
+      - p4yment
+      - cog-bear-profile
+      - fix-cache:
+          requires:
+            - p4yment
+            - cog-bear-profile
+      - update-retry:
+          requires:
+            - p4yment
+            - cog-bear-profile
+      - VERIFY_STG:
+          requires:
+            - p4yment
+            - cog-bear-profile
+      - v5-nightly4:
+          requires:
+            - p4yment
+            - cog-bear-profile
+      - Deploy_Pipeline6:
+          requires:
+            - p4yment
+            - cog-bear-profile
+      - sidebarFieldsCb
+      - FINX
+      - sha-a468407
+      - PROD_STAGE_6:
+          requires:
+            - sidebarFieldsCb
+            - FINX
+            - sha-a468407
+      - fix-login-reload:
+          requires:
+            - sidebarFieldsCb
+            - FINX
+            - sha-a468407
+      - rocket:
+          requires:
+            - sidebarFieldsCb
+            - FINX
+            - sha-a468407
+      - bake-it:
+          requires:
+            - sidebarFieldsCb
+            - FINX
+            - sha-a468407
+      - chen-push:
+          requires:
+            - sidebarFieldsCb
+            - FINX
+            - sha-a468407
+      - ensure-nightly-regression-suite:
+          requires:
+            - sidebarFieldsCb
+            - FINX
+            - sha-a468407
+      - rigel-beta:
+          requires:
+            - sidebarFieldsCb
+            - FINX
+            - sha-a468407
+      - FORM
+      - config-66619-complex
+      - group__track--block
+      - vera-ci:
+          requires:
+            - FORM
+            - config-66619-complex
+            - group__track--block
+      - py310-cov:
+          requires:
+            - FORM
+            - config-66619-complex
+            - group__track--block
+      - fix-2248:
+          requires:
+            - FORM
+            - config-66619-complex
+            - group__track--block
+      - kilo:
+          requires:
+            - FORM
+            - config-66619-complex
+            - group__track--block
+      - vela-beta:
+          requires:
+            - FORM
+            - config-66619-complex
+            - group__track--block
+      - wg
+      - rm-cache-leak:
+          requires:
+            - wg
+      - ResourceFunc:
+          requires:
+            - wg
+      - helios-beta:
+          requires:
+            - ResourceFunc
+      - xyz_v2:
+          requires:
+            - ResourceFunc
+      - tam-verify:
+          requires:
+            - xyz_v2
+      - kZ:
+          requires:
+            - xyz_v2
+      - smoke:
+          requires:
+            - kZ
+      - AD054:
+          requires:
+            - kZ
+      - golf:
+          requires:
+            - AD054
+      - OPT_FRAME:
+          requires:
+            - AD054
+      - ci-alt:
+          requires:
+            - OPT_FRAME
+      - PolicyTest:
+          requires:
+            - OPT_FRAME
+      - feb5-cleanup:
+          requires:
+            - PolicyTest
+      - Psi_dot:
+          requires:
+            - PolicyTest
+      - fx:
+          requires:
+            - Psi_dot
+      - id60156:
+          requires:
+            - Psi_dot
+      - callisto-final:
+          requires:
+            - id60156
+      - omega_xy
+      - try-circle:
+          requires:
+            - omega_xy
+      - push-it:
+          requires:
+            - try-circle
+      - allChars:
+          requires:
+            - try-circle
+      - DTL-DATE-IN:
+          requires:
+            - allChars
+      - LaunchProd:
+          requires:
+            - DTL-DATE-IN
+      - cube_register:
+          requires:
+            - DTL-DATE-IN
+      - orchid-dst:
+          requires:
+            - cube_register
+      - send-it:
+          requires:
+            - orchid-dst
+      - resolveACLs:
+          requires:
+            - orchid-dst
+      - noahy:
+          requires:
+            - resolveACLs
+      - nightly-v4:
+          requires:
+            - noahy
